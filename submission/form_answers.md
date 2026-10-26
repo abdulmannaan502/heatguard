@@ -12,7 +12,7 @@ Built during the challenge by one person: (1) a physics-based synthetic worker a
 
 **Technology type:** Machine learning, Software application, Analytics
 
-**Prototype / demo link:** https://claude.ai/artifact/3zWxYgsZwFMgFTf4xGsLVu  (set sharing so reviewers can open it, or replace with your GitHub link)
+**Prototype / demo link:** https://abdulmannaan502.github.io/heatguard/   (code: https://github.com/abdulmannaan502/heatguard)
 
 **Upload your solution deck:** HeatGuard_Submission.pdf
 

@@ -325,7 +325,7 @@ tb(s, 5.05, 1.2, 4.65, 4.2, [
     B(f"Alert burden is high in simulation ({EV['warning']['amber_or_red_rate_among_never_38']:.0f}% of never-above-38 °C workers saw at least an amber tier; red {EV['warning']['red_alert_rate_among_never_38']:.0f}%). Amber is a soft prompt; thresholds need pilot tuning."),
     B("Lowest warning rate is for acclimatized workers (76% warned 10+ min ahead)."),
     H("Try it"),
-    B("Live replay console: https://claude.ai/artifact/3zWxYgsZwFMgFTf4xGsLVu (open to reviewers on request)."),
+    B("Live replay console: https://abdulmannaan502.github.io/heatguard/  |  Code: https://github.com/abdulmannaan502/heatguard"),
 ], size=8.5)
 
 prs.save(OUT)
