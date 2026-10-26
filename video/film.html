@@ -1,0 +1,219 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>HeatGuard film</title>
+<style>
+:root{--bg:#f3eee7;--panel:#fbf8f3;--ink:#3b312b;--ink2:#7a6a5e;--line:#ddd2c4;--brown:#7a6656;--taupe:#d9cfc1;--ok:#2f7a57;--amber:#c98a12;--red:#bf3b2b;--ok-bg:#dcebe2;--amber-bg:#f6e8c6;--red-bg:#f5d9d3}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg);font-family:'Outfit',system-ui,sans-serif;color:var(--ink)}
+#stage{position:relative;width:1920px;height:1080px;overflow:hidden}
+.scene{position:absolute;inset:0;opacity:0;pointer-events:none}
+.abs{position:absolute}
+.kicker{font-size:26px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink2);font-weight:500}
+h1{font-size:230px;font-weight:300;letter-spacing:-.01em;line-height:1}
+h1 b{font-weight:500;color:var(--brown)}
+.sub{font-size:52px;font-weight:300;line-height:1.2}
+.card{background:var(--panel);border:2px solid var(--line);border-radius:14px}
+.big{font-weight:500;line-height:1}
+.lab{font-size:34px;line-height:1.3;color:var(--ink2)}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+#cap{position:absolute;left:0;right:0;bottom:0;height:112px;display:flex;align-items:center;justify-content:center;background:rgba(36,29,24,.9);color:#fff;font-size:38px;line-height:1.25;text-align:center;padding:0 140px;opacity:0;z-index:50}
+#iframe{position:absolute;left:0;top:0;width:1536px;height:780px;border:0;background:var(--bg);transform:scale(1.25);transform-origin:0 0}
+.hl{position:absolute;border:5px solid #e0a010;border-radius:12px;box-shadow:0 0 0 6px rgba(224,160,16,.25);opacity:0;z-index:20;pointer-events:none}
+.box{position:absolute;border-radius:14px;display:flex;flex-direction:column;justify-content:center;padding:0 30px;opacity:0}
+.box b{font-size:36px;font-weight:500}.box span{font-size:27px;color:var(--ink2);margin-top:4px}
+.in{background:var(--panel);border:2px solid var(--brown)}
+.eng{background:var(--brown);color:#fff;border:2px solid var(--brown)}.eng span{color:#eadfd2}
+.eng li{font-size:30px;line-height:1.45;margin-left:30px;color:#fff}
+.tier{font-size:40px;font-weight:600;letter-spacing:.05em;border-radius:14px;padding:22px 34px;display:flex;justify-content:space-between;align-items:center;opacity:0}
+.tier span{font-size:30px;font-weight:400;letter-spacing:0}
+.badge{position:absolute;right:60px;top:44px;font-size:24px;letter-spacing:.12em;text-transform:uppercase;border:2px solid var(--brown);color:var(--brown);padding:8px 18px;border-radius:99px}
+</style></head>
+<body><div id="stage">
+
+<!-- 1 TITLE -->
+<div class="scene" id="s_title">
+  <div class="abs kicker" style="left:110px;top:110px" id="t_k">Population health &nbsp;&middot;&nbsp; Climate-resilient worker health</div>
+  <h1 class="abs" style="left:100px;top:170px" id="t_h">Heat<b>Guard</b></h1>
+  <div class="abs sub" style="left:110px;top:430px;width:1700px" id="t_s">A personal heat-strain early warning for outdoor workers</div>
+  <div class="abs" style="left:110px;top:560px;font-size:34px;color:var(--ink2)" id="t_c">Future Health Digital Innovation Challenge</div>
+  <canvas id="t_cv" class="abs" width="1700" height="270" style="left:110px;top:630px"></canvas>
+  <div class="abs" style="left:110px;top:915px;font-size:28px;color:var(--ink2)" id="t_a">Abdul Mannaan Sayyad &middot; AI Engineer, Triad AI &middot; India</div>
+</div>
+
+<!-- 2 PROBLEM -->
+<div class="scene" id="s_prob">
+  <div class="card abs" id="p_c1" style="left:90px;top:70px;width:800px;height:330px;padding:28px 44px">
+    <div class="big" style="font-size:170px;color:var(--brown)">2.2%</div>
+    <div class="lab" style="margin-top:10px;font-size:31px">of global working hours lost to heat stress by 2030<br><span style="font-size:25px">ILO, 2019: equal to 80 million full-time jobs</span></div></div>
+  <div class="card abs" id="p_c2" style="left:90px;top:430px;width:800px;height:320px;padding:28px 44px">
+    <div class="big mono" style="font-size:96px;color:var(--brown);margin-top:12px">12:30&ndash;15:00</div>
+    <div class="lab" style="margin-top:16px;font-size:31px">UAE outdoor-work ban, every 15 June to 15 September<br><span style="font-size:25px">A fixed time window. The same rule for every worker.</span></div></div>
+  <div class="abs" id="p_big" style="left:90px;top:790px;width:800px;font-size:76px;font-weight:500;line-height:1.05;color:var(--red)">Heat risk is individual.</div>
+  <div class="card abs" id="p_chart" style="left:930px;top:70px;width:900px;height:860px;padding:26px 30px">
+    <div style="font-size:30px;font-weight:500">Same site, same hours, same weather</div>
+    <div style="font-size:24px;color:var(--ink2);margin-top:4px">Simulated core temperature, no HeatGuard</div>
+    <canvas id="p_cv1" width="840" height="320" style="margin-top:12px;display:block"></canvas>
+    <canvas id="p_cv2" width="840" height="320" style="margin-top:6px;display:block"></canvas>
+  </div>
+</div>
+
+<!-- 3 HOW -->
+<div class="scene" id="s_how">
+  <div class="abs kicker" style="left:110px;top:56px">How it works</div>
+  <div class="abs kicker" style="left:90px;top:130px;font-size:22px">Inputs</div>
+  <div class="box in" id="h_i0" style="left:90px;top:176px;width:450px;height:128px"><b>Wearable heart rate</b><span>any low-cost wrist band</span></div>
+  <div class="box in" id="h_i1" style="left:90px;top:326px;width:450px;height:128px"><b>Site weather</b><span>temperature, humidity, sun, wind</span></div>
+  <div class="box in" id="h_i2" style="left:90px;top:476px;width:450px;height:128px"><b>Task being done</b><span>light to very heavy</span></div>
+  <div class="box in" id="h_i3" style="left:90px;top:626px;width:450px;height:128px"><b>Days on the job</b><span>heat acclimatization</span></div>
+  <div class="box eng" id="h_eng" style="left:700px;top:176px;width:540px;height:578px;padding:36px 40px;justify-content:flex-start">
+    <b style="font-size:44px">HeatGuard engine</b><span style="font-size:28px">runs every minute</span>
+    <ul style="margin-top:28px;list-style:disc"><li>Kalman filter: core and skin temperature</li><li>Heat-balance model: metabolism, sweat, evaporation, hydration</li><li>Heart rate corrects the model, with outlier gating</li><li>Forecast 30 minutes ahead, with uncertainty</li></ul></div>
+  <div class="abs kicker" style="left:1400px;top:130px;font-size:22px;letter-spacing:.14em" id="h_tk">Traffic light</div>
+  <div class="tier" id="h_t0" style="left:1400px;top:176px;width:430px;position:absolute;background:var(--ok-bg);color:var(--ok)">GREEN<span>keep working</span></div>
+  <div class="tier" id="h_t1" style="left:1400px;top:326px;width:430px;position:absolute;background:var(--amber-bg);color:var(--amber);flex-wrap:wrap">AMBER<span>5-min shade + water</span></div>
+  <div class="tier" id="h_t2" style="left:1400px;top:476px;width:430px;position:absolute;background:var(--red-bg);color:var(--red);flex-wrap:wrap">RED<span>15-min rest, first-aider told</span></div>
+  <svg class="abs" style="left:0;top:0" width="1920" height="1080" id="h_svg"></svg>
+  <div class="abs card" id="h_foot" style="left:90px;top:810px;width:1740px;height:110px;opacity:0;display:flex;align-items:center;padding:0 40px;font-size:33px;gap:50px;color:var(--ink)">
+    <span><b style="color:var(--brown)">Worker</b> gets the alert in their own language</span><span><b style="color:var(--brown)">Supervisor</b> sees the tier only</span><span><b style="color:var(--brown)">Authority</b> sees aggregates</span></div>
+</div>
+
+<!-- 4 DEMO -->
+<div class="scene" id="s_demo">
+  <iframe id="iframe" src="/web/dist/index.html?embed=1&theme=light"></iframe>
+  <div class="hl" id="hl1"></div><div class="hl" id="hl2"></div><div class="hl" id="hl3"></div>
+</div>
+
+<!-- 5 RESULTS -->
+<div class="scene" id="s_res">
+  <div class="badge">Simulated results</div>
+  <div class="abs kicker" style="left:100px;top:70px">Held-out test, 3,000 simulated worker-shifts</div>
+  <div class="card abs" style="left:90px;top:140px;width:880px;height:600px;padding:34px 44px">
+    <div style="font-size:36px;font-weight:500">Workers reaching 38.5 &deg;C</div>
+    <div id="r_b1" style="margin-top:34px"></div></div>
+  <div class="card abs" style="left:1010px;top:140px;width:820px;height:600px;padding:34px 44px">
+    <div style="font-size:36px;font-weight:500">Productive hours per shift</div>
+    <div id="r_b2" style="margin-top:34px"></div></div>
+  <div class="abs" id="r_chips" style="left:90px;top:780px;width:1740px;display:flex;gap:26px"></div>
+</div>
+
+<!-- 6 CLOSE -->
+<div class="scene" id="s_close">
+  <div class="abs kicker" style="left:110px;top:90px">Built responsibly</div>
+  <ul id="c_list" class="abs" style="left:110px;top:150px;list-style:none;font-size:44px;line-height:1.35;width:1000px"></ul>
+  <div class="card abs" id="c_next" style="left:1180px;top:150px;width:650px;height:430px;padding:36px 44px">
+    <div class="kicker" style="font-size:22px">Next</div>
+    <div style="font-size:40px;line-height:1.35;margin-top:18px"><b style="font-weight:500">Q1 2027</b><br>Calibration study against ingestible-pill readings<br><br><b style="font-weight:500">Jun&ndash;Sep 2027</b><br>Pilot at an Abu Dhabi site</div></div>
+  <div class="abs" id="c_end" style="left:110px;top:690px"><h1 style="font-size:150px">Heat<b>Guard</b></h1><div class="sub" style="font-size:46px;margin-top:6px">From signals to solutions.</div>
+    <div style="font-size:28px;color:var(--ink2);margin-top:22px">Abdul Mannaan Sayyad &middot; Triad AI &middot; India</div></div>
+</div>
+
+<div id="cap"></div>
+</div>
+
+<script>
+const TL=/*TL*/[];
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)), ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+const prog=(t,a,b)=>clamp((t-a)/(b-a));
+const $=id=>document.getElementById(id);
+let DEMO=null,EVAL=null;
+const sc=Object.fromEntries(TL.map(s=>[s.scene,s]));
+const sentAt=(scene,i)=>sc[scene].sents[i];
+
+function drawChart(cv,series,p,opt={}){
+  const g=cv.getContext('2d'),w=cv.width,h=cv.height;g.clearRect(0,0,w,h);
+  const L=70,R=44,T=14,B=44,lo=opt.lo||36.6,hi=opt.hi||40.0,T0=360,T1=1080;
+  const x=m=>L+(m-T0)/(T1-T0)*(w-L-R),y=v=>T+(hi-v)/(hi-lo)*(h-T-B);
+  g.font='22px JetBrains Mono, monospace';g.textBaseline='middle';
+  g.fillStyle='rgba(122,102,86,.14)';g.fillRect(x(750),T,x(900)-x(750),h-T-B);
+  g.strokeStyle='#ddd2c4';g.lineWidth=1.5;g.fillStyle='#7a6a5e';g.textAlign='right';
+  for(let v=37;v<=hi;v++){g.beginPath();g.moveTo(L,y(v));g.lineTo(w-R,y(v));g.stroke();g.fillText(v+'°',L-10,y(v))}
+  g.textAlign='center';for(let hh=6;hh<=18;hh+=3){g.fillText(String(hh).padStart(2,'0')+':00',x(hh*60),h-16)}
+  g.strokeStyle='#bf3b2b';g.lineWidth=2.5;g.setLineDash([12,8]);g.beginPath();g.moveTo(L,y(38.5));g.lineTo(w-R,y(38.5));g.stroke();g.setLineDash([]);
+  g.fillStyle='#bf3b2b';g.textAlign='left';g.fillText('38.5 °C limit',L+10,y(38.5)-18);
+  const n=Math.floor(p*(series[0].d.length-1));
+  series.forEach(s=>{g.strokeStyle=s.c;g.lineWidth=s.w||4.5;g.beginPath();for(let i=0;i<=n;i++){const X=x(360+i),Y=y(s.d[i]);i?g.lineTo(X,Y):g.moveTo(X,Y)}g.stroke();
+    g.fillStyle=s.c;g.beginPath();g.arc(x(360+n),y(s.d[n]),8,0,7);g.fill()});
+}
+function bars(el,rows,p,fmt,max,colors){
+  el.innerHTML=rows.map((r,i)=>{const w=clamp(p*1.3-i*0.15)*r.v/max*100;
+   return `<div style="margin-bottom:38px"><div style="font-size:30px;color:var(--ink2);margin-bottom:8px">${r.l}</div><div style="display:flex;align-items:center;gap:18px"><div style="height:62px;width:${w*0.78}%;background:${colors[i]};border-radius:8px"></div><div class="mono" style="font-size:50px;font-weight:500">${fmt(r.v*clamp(p*1.3-i*0.15))}</div></div></div>`}).join('');
+}
+
+function setScene(id,a,b,t,fadeT=.35){const el=$(id);const o=Math.min(prog(t,a-fadeT,a),1-prog(t,b,b+fadeT));el.style.opacity=(t>=a-fadeT&&t<=b+fadeT)?Math.max(0,o):0;el.style.display=(t>=a-fadeT&&t<=b+fadeT)?'block':'none'}
+
+const demoKeys=()=>{ // [videoTime, dashIndex]
+  const s=i=>sentAt('demo',i);
+  return [[sc.demo.start,0],[s(1).start,95],[s(2).start,133],[s(2).start+3.1,143],[s(3).start+2.2,150],[s(3).start+3.3,200],
+          [s(4).start+0.2,330],[s(4).end,640],[s(5).start,719],[sc.demo.end,719]]};
+function lerpKeys(keys,t){if(t<=keys[0][0])return keys[0][1];for(let i=1;i<keys.length;i++){if(t<=keys[i][0]){const a=keys[i-1],b=keys[i];return a[1]+(b[1]-a[1])*(t-a[0])/(b[0]-a[0]||1)}}return keys[keys.length-1][1]}
+
+function hlBox(id,doc,sel,t0,t1,t,pad=8){const el=$(id);const q=doc&&doc.querySelector(sel);if(!q||t<t0||t>t1){el.style.opacity=0;return}
+  const r0=q.getBoundingClientRect(),K=1.25,r={left:r0.left*K,top:r0.top*K,width:r0.width*K,height:r0.height*K};Object.assign(el.style,{left:(r.left-pad)+'px',top:(r.top-pad)+'px',width:(r.width+2*pad)+'px',height:(r.height+2*pad)+'px',opacity:Math.min(1,(t-t0)*4,(t1-t)*4)*(.75+.25*Math.sin(t*9))})}
+
+let lastSel=-1,lastSup=null;
+window.render=function(t){
+  if(!DEMO)return;
+  // scenes
+  for(const [id,name] of [['s_title','title'],['s_prob','problem'],['s_how','how'],['s_demo','demo'],['s_res','results'],['s_close','close']]) setScene(id,sc[name].start,sc[name].end,t);
+  // captions
+  let cap='';for(const S of TL)for(const s of S.sents){if(t>=s.start-0.05&&t<=s.end+0.15)cap=s.text}
+  const capEl=$('cap');capEl.textContent=cap;capEl.style.opacity=cap?1:0;
+  const A=DEMO.A.Tc,C=DEMO.C.Tc;
+  // title
+  if(t<sc.title.end+.5){const p=ease(prog(t,0.8,sc.title.end-0.5));
+    $('t_k').style.opacity=prog(t,0.1,0.6);$('t_h').style.opacity=prog(t,0.2,0.9);$('t_s').style.opacity=prog(t,2.0,2.8);$('t_c').style.opacity=prog(t,sentAt('title',1).start,sentAt('title',1).start+.8);$('t_a').style.opacity=prog(t,7,8);
+    drawChart($('t_cv'),[{d:A[1],c:'#bf3b2b'},{d:C[1],c:'#2f7a57',w:5}],p,{lo:36.8,hi:40.0})}
+  // problem
+  if(t>=sc.problem.start-.4&&t<=sc.problem.end+.4){
+    $('p_c1').style.opacity=prog(t,sentAt('problem',0).start,sentAt('problem',0).start+.8);
+    $('p_c2').style.opacity=prog(t,sentAt('problem',1).start,sentAt('problem',1).start+.8);
+    const s3=sentAt('problem',3).start,s4=sentAt('problem',4);
+    $('p_chart').style.opacity=prog(t,s3,s3+.8);
+    $('p_big').style.opacity=prog(t,sentAt('problem',5).start,sentAt('problem',5).start+.6);
+    const p1=ease(prog(t,s3+.6,s4.end-.3));
+    drawChart($('p_cv1'),[{d:A[1],c:'#bf3b2b'}],p1,{});drawChart($('p_cv2'),[{d:A[6],c:'#2f7a57'}],p1,{});
+    const g1=$('p_cv1').getContext('2d'),g2=$('p_cv2').getContext('2d');
+    g1.font='500 24px Outfit, sans-serif';g1.fillStyle='#3b312b';g1.textAlign='right';g1.fillText('Rebar fixer, day 4: peak 39.6 °C',830,30);
+    g2.font='500 24px Outfit, sans-serif';g2.fillStyle='#3b312b';g2.textAlign='right';g2.fillText('Crane signaller, day 201: peak 37.2 °C',830,30);}
+  // how
+  if(t>=sc.how.start-.4&&t<=sc.how.end+.4){
+    const s0=sentAt('how',0).start,s1=sentAt('how',1).start,s2=sentAt('how',2).start;
+    for(let i=0;i<4;i++)$('h_i'+i).style.opacity=prog(t,s0+1.0+i*1.7,s0+1.6+i*1.7);
+    $('h_eng').style.opacity=prog(t,s1,s1+.8);$('h_tk').style.opacity=prog(t,s2,s2+.6);
+    $('h_t0').style.opacity=prog(t,s2+.4,s2+1);$('h_t1').style.opacity=prog(t,s2+4.0,s2+4.6);$('h_t2').style.opacity=prog(t,s2+6.0,s2+6.6);
+    $('h_foot').style.opacity=prog(t,s2+8.5,s2+9.3);
+    const svg=$('h_svg');const ar=(x1,y1,x2,y2,o)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#7a6656" stroke-width="4" opacity="${o}"/><polygon points="${x2},${y2} ${x2-16},${y2-9} ${x2-16},${y2+9}" fill="#7a6656" opacity="${o}"/>`;
+    let h='';for(let i=0;i<4;i++)h+=ar(545,240+i*150,695,300+i*50,prog(t,s0+1.2+i*1.7,s0+1.8+i*1.7));
+    h+=ar(1245,465,1395,465,prog(t,s2,s2+.6));svg.innerHTML=h;}
+  // demo
+  if(t>=sc.demo.start-.4&&t<=sc.demo.end+.4){
+    const f=$('iframe'),w=f.contentWindow;
+    if(w&&w.HG){const keys=demoKeys();const idx=lerpKeys(keys,t);
+      if(lastSel!==1){w.HG.select(1);lastSel=1}
+      const sup=t>=sentAt('demo',5).start+1.0;if(sup!==lastSup){w.HG.sup(sup);lastSup=sup}
+      w.HG.seek(Math.round(idx));
+      const d=f.contentDocument;
+      hlBox('hl1',d,'.lower .card:nth-child(2)',sentAt('demo',2).start+1.8,sentAt('demo',2).end+1.2,t);
+      hlBox('hl2',d,'#chart',sentAt('demo',3).start+0.3,sentAt('demo',4).end,t,6);
+      hlBox('hl3',d,'#view',sentAt('demo',5).start,sentAt('demo',5).start+2.5,t);
+      }}
+  // results
+  if(t>=sc.results.start-.4&&t<=sc.results.end+.4){
+    const s0=sentAt('results',0),s1=sentAt('results',1),s2=sentAt('results',2);
+    const E=EVAL.holdout_202;
+    const p1=ease(prog(t,s0.start+2,s0.start+6.5)),p2=ease(prog(t,s1.start+1.2,s1.start+4.2));
+    const rows1=[{l:'A  Status quo',v:E.A.exc385},{l:'B  Site WBGT cut-off',v:E.B.exc385},{l:'C  HeatGuard',v:E.C.exc385}];
+    const rows2=[{l:'A  Status quo',v:E.A.work_h},{l:'B  Site WBGT cut-off',v:E.B.work_h},{l:'C  HeatGuard',v:E.C.work_h}];
+    bars($('r_b1'),rows1,p1,v=>v.toFixed(1)+'%',40,['#bf3b2b','#c98a12','#2f7a57']);
+    bars($('r_b2'),rows2,p2,v=>v.toFixed(1)+' h',10,['#bf3b2b','#c98a12','#2f7a57']);
+    const chips=[[`${E.warning.warned_10.toFixed(0)}%`,'of 38.5 °C crossings warned 10+ min ahead',s2.start],[`${E.warning.median_lead_min.toFixed(0)} min`,'median warning lead',s2.start+.5],[`${E.estimator.rmse.toFixed(2)} °C`,'core-temperature estimate error (RMSE)',s2.start+1],['3.8%','HeatGuard on an independent replicate cohort',s2.end]];
+    $('r_chips').innerHTML=chips.map(c=>`<div class="card" style="flex:1;padding:22px 28px;opacity:${prog(t,c[2],c[2]+.6)}"><div class="mono big" style="font-size:56px;color:var(--brown)">${c[0]}</div><div style="font-size:26px;color:var(--ink2);margin-top:8px;line-height:1.25">${c[1]}</div></div>`).join('');}
+  // close
+  if(t>=sc.close.start-.4&&t<=sc.close.end+.4){
+    const s0=sentAt('close',0),s1=sentAt('close',1),s2=sentAt('close',2);
+    const items=['Decision support, not diagnosis','Consented, worker-owned data','Supervisor sees the tier only; authority sees groups of 5 or more','Every red alert reaches a human first-aider'];
+    $('c_list').innerHTML=items.map((x,i)=>`<li style="margin-bottom:22px;opacity:${prog(t,s0.start+.4+i*2.3,s0.start+1+i*2.3)}"><span style="color:var(--ok);font-weight:600">&#10003;</span>&nbsp; ${x}</li>`).join('');
+    $('c_next').style.opacity=prog(t,s1.start,s1.start+.8);$('c_end').style.opacity=prog(t,s2.start,s2.start+.8);}
+};
+Promise.all([fetch('/results/demo_shift.json').then(r=>r.json()),fetch('/results/evaluation.json').then(r=>r.json())]).then(([d,e])=>{DEMO=d;EVAL=e;
+  const f=$('iframe');const chk=()=>{if(f.contentWindow&&f.contentWindow.HG)window.__ready=true;else setTimeout(chk,100)};chk();});
+</script></body></html>

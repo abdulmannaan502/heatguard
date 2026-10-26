@@ -1,0 +1,11 @@
+HeatGuard: personal heat-strain early warning for outdoor workers
+Future Health Digital Innovation Challenge, [Population Health] Climate-Resilient Worker Health
+
+HeatGuard estimates each worker's core temperature from a low-cost wearable heart rate, site weather, task and days on the job, forecasts it 30 minutes ahead, and sends a tiered alert (amber or red) in the worker's own language. Supervisors see only the tier. Authorities see aggregates of 5 or more workers.
+
+Everything shown in this video is simulated (synthetic workers, physics-based simulator). HeatGuard is screening and decision support, not a diagnosis or a medical device. Alert translations are machine-drafted and need native-speaker review before any pilot.
+
+Built by Abdul Mannaan Sayyad, AI Engineer, Triad AI, India.
+
+Sources: ILO, Working on a warmer planet (2019); UAE midday break rule (Gulf News, 2025); Buller et al. 2013 (Physiol Meas); Falcone et al. 2024 (Front Public Health).
+Narration: Kokoro text-to-speech (Apache-2.0), AI-generated voice.

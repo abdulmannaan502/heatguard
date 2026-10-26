@@ -1,0 +1,99 @@
+1
+00:00:00,000 --> 00:00:04,622
+Every summer, outdoor workers collapse from heat, even when every rule is followed.
+
+2
+00:00:04,802 --> 00:00:11,067
+This is HeatGuard, a personal heat-strain early warning, built for the Future Health Digital Innovation Challenge.
+
+3
+00:00:12,147 --> 00:00:19,928
+The International Labour Organization expects heat stress to cost two point two percent of global working hours by twenty thirty.
+
+4
+00:00:20,108 --> 00:00:24,602
+The UAE already bans outdoor work from twelve thirty to three every summer.
+
+5
+00:00:24,782 --> 00:00:27,293
+But a fixed time window treats everyone the same.
+
+6
+00:00:27,473 --> 00:00:31,306
+Here are two workers on the same simulated site, in the same weather.
+
+7
+00:00:31,486 --> 00:00:39,480
+A new arrival on day four reaches thirty-nine point six degrees. A veteran on day two hundred stays under thirty-seven point three.
+
+8
+00:00:39,660 --> 00:00:41,445
+Heat risk is individual.
+
+9
+00:00:42,525 --> 00:00:51,500
+HeatGuard combines four inputs: the worker's own heart rate from any low-cost wristband, site weather, the task being done, and days on the job.
+
+10
+00:00:51,680 --> 00:00:59,694
+A Kalman filter fuses a heat-balance model with the heart rate to estimate core temperature every minute, and forecasts thirty minutes ahead.
+
+11
+00:00:59,874 --> 00:01:08,380
+The output is a simple traffic light. Amber means a short shade break. Red means rest for fifteen minutes, and a human first-aider is told.
+
+12
+00:01:09,460 --> 00:01:19,842
+Here is a simulated hot August shift at an Abu Dhabi site. Eight workers, six a.m. to six p.m. The grey band is the statutory midday break.
+
+13
+00:01:20,022 --> 00:01:27,376
+Watch worker two, a rebar fixer on day four. Early on, HeatGuard sees a high-strain pattern and prompts shade and water.
+
+14
+00:01:27,556 --> 00:01:31,624
+At eight twenty-three it turns red, and her phone gets the alert in Hindi.
+
+15
+00:01:31,804 --> 00:01:39,818
+The red line shows what happens with no HeatGuard: she crosses thirty-eight point five at eight thirty and climbs to thirty-nine point six.
+
+16
+00:01:39,998 --> 00:01:46,285
+The green line is the same worker with HeatGuard. Short rests keep her below thirty-eight point four, all day.
+
+17
+00:01:46,465 --> 00:01:54,864
+Switch to the supervisor view. The site manager sees only a tier and an action. No temperature, no heart rate. The worker owns the data.
+
+18
+00:01:55,044 --> 00:02:00,818
+By the end of the shift, five of eight workers would have reached the limit without HeatGuard. With it, none did.
+
+19
+00:02:01,898 --> 00:02:14,478
+Across three thousand held-out simulated worker-shifts, thirty-eight percent of workers reach thirty-eight point five degrees under today's practice, and twenty-two percent under a site-wide W-B-G-T cut-off.
+
+20
+00:02:14,658 --> 00:02:20,902
+With HeatGuard it is four point three percent, while keeping seven productive hours per shift instead of six.
+
+21
+00:02:21,082 --> 00:02:25,172
+Eighty-two percent of limit crossings were warned ten or more minutes ahead.
+
+22
+00:02:25,352 --> 00:02:30,124
+These are simulated results. The next step is calibration against human data.
+
+23
+00:02:31,204 --> 00:02:41,096
+HeatGuard is decision support, not diagnosis. Data is consented and worker-owned, aggregates need five workers, and every red alert reaches a human.
+
+24
+00:02:41,276 --> 00:02:46,389
+Next: a calibration study, then a pilot at an Abu Dhabi site before next summer.
+
+25
+00:02:46,569 --> 00:02:48,973
+HeatGuard. From signals to solutions.

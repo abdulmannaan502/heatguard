@@ -1,0 +1,231 @@
+<title>HeatGuard Site Console</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Devanagari&family=Noto+Sans+Bengali&family=Noto+Sans+Malayalam&family=Noto+Sans+Arabic&display=swap" rel="stylesheet">
+<style>
+/* Layout: one-screen operations console. Top strip = site summary, middle = 8 worker tiles, bottom = selected worker chart + phone + event log. */
+:root{
+  --bg:#f3eee7; --panel:#fbf8f3; --ink:#3b312b; --ink2:#7a6a5e; --line:#ddd2c4; --accent:#7a6656; --accent-soft:#e7dccd;
+  --ok:#2f7a57; --amber:#c98a12; --red:#bf3b2b; --ok-bg:#dcebe2; --amber-bg:#f6e8c6; --red-bg:#f5d9d3;
+  --phone:#e9e3d8; --bubble:#fffdf9; --chart-a:#bf3b2b; --chart-c:#2f7a57; --chart-est:#7a6656; --shade:rgba(122,102,86,.13);
+  --f-display:'Outfit',system-ui,sans-serif; --f-mono:'JetBrains Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1c1814; --panel:#25201b; --ink:#efe7dc; --ink2:#a99a8b; --line:#3a322b; --accent:#c8ae93; --accent-soft:#342d26;
+  --ok:#5bbf8c; --amber:#e3a932; --red:#e5685a; --ok-bg:#1f3329; --amber-bg:#3a2f14; --red-bg:#40201b;
+  --phone:#2d2721; --bubble:#332c25; --chart-a:#e5685a; --chart-c:#5bbf8c; --chart-est:#c8ae93; --shade:rgba(200,174,147,.10); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1c1814; --panel:#25201b; --ink:#efe7dc; --ink2:#a99a8b; --line:#3a322b; --accent:#c8ae93; --accent-soft:#342d26;
+  --ok:#5bbf8c; --amber:#e3a932; --red:#e5685a; --ok-bg:#1f3329; --amber-bg:#3a2f14; --red-bg:#40201b;
+  --phone:#2d2721; --bubble:#332c25; --chart-a:#e5685a; --chart-c:#5bbf8c; --chart-est:#c8ae93; --shade:rgba(200,174,147,.10); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-display);font-size:14px;margin:0;
+  padding-block:14px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1880px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+header{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.brand{font-weight:600;font-size:22px;letter-spacing:.01em}.brand span{color:var(--accent);font-weight:300}
+.sub{color:var(--ink2);font-size:13px}
+.spacer{flex:1}
+.clock{font-family:var(--f-mono);font-size:28px;font-weight:500;min-width:92px;text-align:right}
+.ctrl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+button,select{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px 12px;cursor:pointer}
+button:hover{border-color:var(--accent)} button:focus-visible,select:focus-visible,input:focus-visible,.tile:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button[aria-pressed="true"]{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+input[type=range]{accent-color:var(--accent);width:min(520px,60vw)}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 14px;min-width:0}
+.kpi .l{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+.kpi .v{font-family:var(--f-mono);font-size:26px;font-weight:500;margin-top:2px}
+.kpi .n{font-size:12px;color:var(--ink2)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(172px,1fr));gap:10px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:11px 13px;cursor:pointer;display:flex;flex-direction:column;gap:6px;min-width:0;position:relative}
+.tile[aria-selected="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.tile .top{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.tile .id{font-weight:600;font-size:15px}.tile .role{color:var(--ink2);font-size:12px}
+.chip{font-size:11px;font-weight:600;letter-spacing:.06em;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.chip.t0{background:var(--ok-bg);color:var(--ok)}.chip.t1{background:var(--amber-bg);color:var(--amber)}.chip.t2{background:var(--red-bg);color:var(--red)}
+.tile.t2{border-color:var(--red)}
+.row{display:flex;justify-content:space-between;font-size:12px;color:var(--ink2);gap:8px}
+.row b{color:var(--ink);font-family:var(--f-mono);font-weight:500}
+.tile canvas{width:100%;height:42px;display:block}
+.act{font-size:12px;font-weight:500}
+.lower{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(250px,.7fr) minmax(250px,.9fr);gap:12px}
+@media (max-width:1100px){.lower{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px;min-width:0}
+.card h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);font-weight:500;margin:0 0 8px}
+#chart{width:100%;height:430px;display:block}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin-top:6px}
+.legend i{display:inline-block;width:18px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.phone{background:var(--phone);border-radius:22px;padding:14px;border:1px solid var(--line);display:flex;flex-direction:column;gap:10px;min-height:340px}
+.phone .hd{font-size:12px;color:var(--ink2);display:flex;justify-content:space-between}
+.bubble{background:var(--bubble);border-radius:12px 12px 12px 3px;padding:10px 12px;font-size:15px;line-height:1.45;border-left:4px solid var(--line)}
+.bubble.t1{border-left-color:var(--amber)}.bubble.t2{border-left-color:var(--red)}.bubble.t0{border-left-color:var(--ok)}
+.bubble small{display:block;color:var(--ink2);margin-top:6px;font-size:11px}
+.bubble[dir=rtl]{text-align:right;border-radius:12px 12px 3px 12px}
+.bubble.l-hi,.bubble.l-ne{font-family:'Noto Sans Devanagari',var(--f-display)}.bubble.l-bn{font-family:'Noto Sans Bengali',var(--f-display)}
+.bubble.l-ml{font-family:'Noto Sans Malayalam',var(--f-display)}.bubble.l-ur{font-family:'Noto Sans Arabic',var(--f-display)}
+.sv{font-size:12px;color:var(--ink2);margin-top:auto}
+#log{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px;max-height:340px;overflow:auto;font-size:13px}
+#log li{display:grid;grid-template-columns:52px 1fr;gap:8px;line-height:1.35}
+#log time{font-family:var(--f-mono);color:var(--ink2);font-size:12px}
+#log .r{color:var(--red);font-weight:600}#log .a{color:var(--amber);font-weight:600}
+.foot{font-size:12px;color:var(--ink2);line-height:1.5}
+body.sup .hide-sup{visibility:hidden}
+body.embed #chart{height:300px}body.embed .phone{min-height:300px}body.embed #log{max-height:300px}body.embed #play, body.embed #speed, body.embed .scrubrow, body.embed .foot{display:none}
+</style>
+
+<div class="wrap" id="app">
+  <header>
+    <div><div class="brand">Heat<span>Guard</span></div><div class="sub" id="sub">Site console, replay of a simulated August shift</div></div>
+    <div class="spacer"></div>
+    <div class="ctrl">
+      <button id="play" type="button" aria-pressed="false">Play</button>
+      <select id="speed" aria-label="Replay speed"><option value="1">1x (1 min / s)</option><option value="5">5 min / s</option><option value="10" selected>10 min / s</option><option value="30">30 min / s</option></select>
+      <button id="view" type="button" aria-pressed="false" title="Supervisor view shows risk tier and action only">Supervisor view</button>
+    </div>
+    <div class="clock" id="clock">06:00</div>
+  </header>
+  <div class="ctrl scrubrow" style="width:100%"><input id="scrub" type="range" min="0" value="0" aria-label="Time of day"></div>
+  <section class="strip" id="strip"></section>
+  <section class="tiles" id="tiles" role="listbox" aria-label="Workers"></section>
+  <section class="lower">
+    <div class="card"><h2 id="chartTitle">Core temperature</h2><canvas id="chart"></canvas>
+      <div class="legend"><span><i style="background:var(--chart-a)"></i>Without HeatGuard (simulated true core temp)</span><span><i style="background:var(--chart-c)"></i>With HeatGuard (simulated true core temp)</span><span><i style="background:var(--chart-est)"></i>HeatGuard estimate &plusmn;1 SD (from wearable + weather)</span></div></div>
+    <div class="card"><h2>Worker phone, WhatsApp / SMS</h2><div class="phone" id="phone"></div></div>
+    <div class="card"><h2>Alert log</h2><ul id="log"></ul></div>
+  </section>
+  <p class="foot">All workers, temperatures and heart rates on this page come from a simulation (synthetic cohort, physics-based plant model). The estimator sees only a noisy wearable heart rate, site weather, task class and days on the job. HeatGuard is screening and decision support, not a diagnosis or a medical device. Alert translations are machine-drafted and need native-speaker review before a pilot.</p>
+</div>
+
+<script>
+/*__DATA__*/
+</script>
+<script>
+(function(){
+const D=window.HG_DATA, W=D.workers, T=D.T, t0=D.t0;
+const qs=new URLSearchParams(location.search);
+if(qs.get('embed')) document.body.classList.add('embed');
+if(qs.get('theme')) document.documentElement.setAttribute('data-theme',qs.get('theme'));
+const $=id=>document.getElementById(id);
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const TIER=['OK','AMBER','RED'], TN=['light','moderate','heavy','very heavy'];
+const state={i:0,sel:0,sup:false,playing:false,speed:10,last:0};
+const hhmm=i=>{const m=t0+i;return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')};
+const f1=x=>x.toFixed(1);
+
+// events from the HeatGuard run: first minute of each new alert episode
+const events=[];
+W.forEach((w,k)=>{let prev=0;for(let i=1;i<T;i++){const tr=D.C.tier[k][i];
+  if(tr>prev&&tr>0){events.push({i,k,tier:tr,est:D.C.hat[k][i],fc:D.C.fc[k][i]});}
+  prev=tr;}});
+events.sort((a,b)=>a.i-b.i);
+// episodes: collapse repeated same-tier within 12 min
+const ev2=[];events.forEach(e=>{const l=[...ev2].reverse().find(x=>x.k===e.k);if(l&&e.i-l.i<12&&e.tier<=l.tier)return;ev2.push(e)});
+
+// ---- build static DOM
+const tiles=$('tiles');
+W.forEach((w,k)=>{const d=document.createElement('div');d.className='tile';d.tabIndex=0;d.setAttribute('role','option');d.id='tile'+k;
+  d.innerHTML=`<div class="top"><div><div class="id">${w.id}</div><div class="role">${w.role} &middot; day ${w.days+1}</div></div><span class="chip t0" id="chip${k}">OK</span></div>
+  <canvas id="sp${k}" width="420" height="84"></canvas>
+  <div class="row hide-sup"><span>Est. core</span><b id="est${k}"></b></div>
+  <div class="row hide-sup"><span>Heart rate</span><b id="hr${k}"></b></div>
+  <div class="act" id="act${k}"></div>`;
+  d.onclick=()=>{state.sel=k;render()};d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){state.sel=k;render();e.preventDefault()}};
+  tiles.appendChild(d)});
+$('strip').innerHTML=['wbgt','red','amber','work','cf'].map(id=>`<div class="kpi"><div class="l" id="${id}l"></div><div class="v" id="${id}v"></div><div class="n" id="${id}n"></div></div>`).join('');
+$('scrub').max=T-1;
+
+function spark(k,i){
+  const c=$('sp'+k),g=c.getContext('2d'),w=c.width,h=c.height;g.clearRect(0,0,w,h);
+  const lo=36.8,hi=39.4,y=v=>h-4-(v-lo)/(hi-lo)*(h-8),x=j=>j/(T-1)*w;
+  g.strokeStyle=css('--line');g.lineWidth=1;g.setLineDash([3,3]);[38.0,38.5].forEach(v=>{g.beginPath();g.moveTo(0,y(v));g.lineTo(w,y(v));g.stroke()});g.setLineDash([]);
+  g.fillStyle=css('--shade');g.fillRect(x(750-t0),0,x(900-750),h);
+  g.strokeStyle=css('--chart-est');g.lineWidth=2.5;g.beginPath();
+  for(let j=0;j<=i;j++){const v=D.C.hat[k][j];j?g.lineTo(x(j),y(v)):g.moveTo(x(j),y(v))}g.stroke();
+  const v=D.C.hat[k][i];g.fillStyle=css(['--ok','--amber','--red'][D.C.tier[k][i]]);g.beginPath();g.arc(x(i),y(v),4.5,0,7);g.fill();
+}
+
+function chart(k,i){
+  const c=$('chart'),r=c.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
+  if(c.width!==Math.round(r.width*dpr)){c.width=Math.round(r.width*dpr);c.height=Math.round(r.height*dpr)}
+  const g=c.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);const w=r.width,h=r.height;g.clearRect(0,0,w,h);
+  const L=46,R=30,Tp=10,B=26,lo=36.6,hi=40.0;
+  const x=j=>L+j/(T-1)*(w-L-R),y=v=>Tp+(hi-v)/(hi-lo)*(h-Tp-B);
+  g.font='11px JetBrains Mono, monospace';g.textBaseline='middle';
+  g.fillStyle=css('--shade');g.fillRect(x(750-t0),Tp,x(900-t0)-x(750-t0),h-Tp-B);
+  g.fillStyle=css('--ink2');g.textAlign='center';g.fillText('midday break',(x(750-t0)+x(900-t0))/2,Tp+9);
+  g.textAlign='right';for(let v=37;v<=40;v++){g.fillStyle=css('--ink2');g.fillText(v+'°',L-6,y(v));g.strokeStyle=css('--line');g.lineWidth=1;g.setLineDash([]);g.beginPath();g.moveTo(L,y(v));g.lineTo(w-R,y(v));g.stroke()}
+  g.textAlign='center';for(let hh=6;hh<=18;hh+=2){const j=hh*60-t0;g.fillStyle=css('--ink2');g.fillText(String(hh).padStart(2,'0')+':00',x(j),h-10)}
+  [[38.0,'38.0 caution'],[38.5,'38.5 limit']].forEach(([v,l],n)=>{g.strokeStyle=css(n?'--red':'--amber');g.lineWidth=1.2;g.setLineDash([6,4]);g.beginPath();g.moveTo(L,y(v));g.lineTo(w-R,y(v));g.stroke();g.setLineDash([]);g.fillStyle=css(n?'--red':'--amber');g.textAlign='left';g.fillText(l,L+6,y(v)-8)});
+  // estimate band
+  g.beginPath();for(let j=0;j<=i;j++){const v=D.C.hat[k][j]+D.C.sig[k][j];j?g.lineTo(x(j),y(v)):g.moveTo(x(j),y(v))}
+  for(let j=i;j>=0;j--){g.lineTo(x(j),y(D.C.hat[k][j]-D.C.sig[k][j]))}g.closePath();g.fillStyle=css('--shade');g.globalAlpha=1.6;g.fill();g.globalAlpha=1;
+  const line=(arr,col,wd,dash)=>{g.strokeStyle=col;g.lineWidth=wd;g.setLineDash(dash||[]);g.beginPath();for(let j=0;j<=i;j++){j?g.lineTo(x(j),y(arr[j])):g.moveTo(x(j),y(arr[j]))}g.stroke();g.setLineDash([])};
+  if(!state.sup){line(D.C.hat[k],css('--chart-est'),2,[]);}
+  line(D.A.Tc[k],css('--chart-a'),2.4,[]);
+  line(D.C.Tc[k],css('--chart-c'),2.8,[]);
+  // end points and cursor
+  g.strokeStyle=css('--ink2');g.lineWidth=1;g.beginPath();g.moveTo(x(i),Tp);g.lineTo(x(i),h-B);g.stroke();
+  [[D.A.Tc[k][i],'--chart-a'],[D.C.Tc[k][i],'--chart-c']].forEach(([v,cl])=>{g.fillStyle=css(cl);g.beginPath();g.arc(x(i),y(v),5,0,7);g.fill()});
+  // alert markers
+  ev2.filter(e=>e.k===k&&e.i<=i).forEach(e=>{g.fillStyle=css(e.tier===2?'--red':'--amber');g.beginPath();g.moveTo(x(e.i),h-B);g.lineTo(x(e.i)-5,h-B+9);g.lineTo(x(e.i)+5,h-B+9);g.fill()});
+}
+
+function phone(k,i){
+  const w=W[k];let last=null;
+  for(const e of ev2){if(e.k===k&&e.i<=i)last=e}
+  const lang=w.lang,rtl=lang==='ur';
+  let tier=D.C.tier[k][i],body;
+  if(last){const m=D.msgs[lang][TIER[last.tier]];
+    body=`<div class="bubble t${last.tier} l-${lang}" ${rtl?'dir="rtl"':''}>${m}<small>${hhmm(last.i)} &middot; ${D.langNames[lang]} &middot; estimated ${f1(last.est)}&deg;C, forecast ${f1(last.fc)}&deg;C in 30 min</small></div>`;}
+  else body=`<div class="bubble t0 l-${lang}" ${rtl?'dir="rtl"':''}>${D.msgs[lang].OK}<small>${D.langNames[lang]}</small></div>`;
+  const vis=state.sup?`<div class="sv">Supervisor sees: <b>${TIER[tier]}</b> &middot; ${['continue','5-min shade + water','15-min rest, first-aider check'][tier]}. No temperature, heart rate or history.</div>`:`<div class="sv">Worker owns this data. Sharing with the employer is limited to the risk tier.</div>`;
+  $('phone').innerHTML=`<div class="hd"><span>HeatGuard &rarr; ${w.id}</span><span>${hhmm(i)}</span></div>${body}${vis}`;
+}
+
+function log(i){
+  const rows=ev2.filter(e=>e.i<=i).slice(-9).reverse();
+  $('log').innerHTML=rows.length?rows.map(e=>`<li><time>${hhmm(e.i)}</time><span><span class="${e.tier===2?'r':'a'}">${TIER[e.tier]}</span> ${W[e.k].id} (${W[e.k].role}): est. ${f1(e.est)}&deg;C, 30-min forecast ${f1(e.fc)}&deg;C. ${e.tier===2?'15-minute rest in shade, water, first-aider informed.':'5-minute shade and water break.'}</span></li>`).join(''):'<li><time></time><span style="color:var(--ink2)">No alerts yet. Workers are in the green zone.</span></li>';
+}
+
+function render(){
+  const i=state.i,k=state.sel;
+  document.body.classList.toggle('sup',state.sup);
+  $('clock').textContent=hhmm(i);$('scrub').value=i;
+  let n=[0,0,0],workMin=0,exA=0,exC=0;
+  W.forEach((w,j)=>{const t=D.C.tier[j][i];n[t]++;
+    $('chip'+j).className='chip t'+t;$('chip'+j).textContent=TIER[t];
+    $('tile'+j).className='tile'+(t===2?' t2':'');$('tile'+j).setAttribute('aria-selected',j===k);
+    $('est'+j).textContent=f1(D.C.hat[j][i])+' °C';
+    const hr=D.C.hr[j][i];$('hr'+j).textContent=hr==null?'sensor gap':Math.round(hr)+' bpm';
+    const wk=D.C.work[j][i];
+    $('act'+j).textContent=wk?('Working, '+TN[D.C.task[j][i]]):(D.inBan(i)?'Midday break':'Resting in shade');
+    $('act'+j).style.color=wk?'var(--ink)':'var(--accent)';
+    spark(j,i);
+    for(let m=0;m<=i;m++){workMin+=D.C.work[j][m]}
+    if(Math.max(...D.A.Tc[j].slice(0,i+1))>=38.5)exA++; if(Math.max(...D.C.Tc[j].slice(0,i+1))>=38.5)exC++;
+  });
+  const wb=D.env.wbgt[i];
+  [['wbgt','Site WBGT',f1(wb)+' °C','Ta '+f1(D.env.Ta[i])+' °C, RH '+Math.round(D.env.RH[i])+' %'],
+   ['red','Red alerts now',n[2],'rest and first-aider check'],['amber','Amber alerts now',n[1],'shade + water break'],
+   ['work','Productive work so far',f1(workMin/60/W.length)+' h','average per worker (with HeatGuard)'],
+   ['cf','Reached 38.5 °C',exC+' of '+W.length,'without HeatGuard: '+exA+' of '+W.length]].forEach(([id,l,v,s])=>{$(id+'l').textContent=l;$(id+'v').textContent=v;$(id+'n').textContent=s});
+  $('wbgtv').style.color=wb>=32?'var(--red)':wb>=30?'var(--amber)':'var(--ink)';
+  $('redv').style.color=n[2]?'var(--red)':'var(--ink)';$('amberv').style.color=n[1]?'var(--amber)':'var(--ink)';
+  $('chartTitle').textContent='Core temperature, '+W[k].id+' ('+W[k].role+', day '+(W[k].days+1)+' on the job)';
+  chart(k,i);phone(k,i);log(i);
+}
+
+// playback
+function tick(ts){if(!state.playing)return;const dt=(ts-state.last)/1000;state.last=ts;
+  state.i=Math.min(T-1,state.i+dt*state.speed);if(state.i>=T-1)setPlay(false);render();requestAnimationFrame(tick)}
+function setPlay(p){state.playing=p;$('play').textContent=p?'Pause':'Play';$('play').setAttribute('aria-pressed',p);if(p){state.last=performance.now();requestAnimationFrame(tick)}}
+$('play').onclick=()=>{if(state.i>=T-1)state.i=0;setPlay(!state.playing)};
+$('speed').onchange=e=>state.speed=+e.target.value;
+$('scrub').oninput=e=>{state.i=+e.target.value;render()};
+$('view').onclick=()=>{state.sup=!state.sup;$('view').setAttribute('aria-pressed',state.sup);render()};
+window.addEventListener('resize',render);
+window.HG={seek(i){state.i=Math.max(0,Math.min(T-1,i));render()},select(k){state.sel=k;render()},sup(v){state.sup=v;render()},events:ev2,state};
+state.i=Math.round(D.startAt||0);render();
+})();
+</script>

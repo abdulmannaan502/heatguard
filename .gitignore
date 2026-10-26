@@ -1,0 +1,4 @@
+__pycache__/
+.pytest_cache/
+video/film_built.html
+submission/*.mp4

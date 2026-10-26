@@ -1,0 +1,169 @@
+[
+ {
+  "scene": "title",
+  "start": 0.0,
+  "end": 12.148,
+  "sents": [
+   {
+    "text": "Every summer, outdoor workers collapse from heat, even when every rule is followed.",
+    "start": 0.0,
+    "end": 4.522666666666667
+   },
+   {
+    "text": "This is HeatGuard, a personal heat-strain early warning, built for the Future Health Digital Innovation Challenge.",
+    "start": 4.802666666666667,
+    "end": 10.968
+   }
+  ]
+ },
+ {
+  "scene": "problem",
+  "start": 12.148,
+  "end": 42.525333333333336,
+  "sents": [
+   {
+    "text": "The International Labour Organization expects heat stress to cost two point two percent of global working hours by twenty thirty.",
+    "start": 12.148,
+    "end": 19.828
+   },
+   {
+    "text": "The UAE already bans outdoor work from twelve thirty to three every summer.",
+    "start": 20.108,
+    "end": 24.502666666666666
+   },
+   {
+    "text": "But a fixed time window treats everyone the same.",
+    "start": 24.782666666666668,
+    "end": 27.193333333333335
+   },
+   {
+    "text": "Here are two workers on the same simulated site, in the same weather.",
+    "start": 27.473333333333336,
+    "end": 31.20666666666667
+   },
+   {
+    "text": "A new arrival on day four reaches thirty-nine point six degrees. A veteran on day two hundred stays under thirty-seven point three.",
+    "start": 31.48666666666667,
+    "end": 39.38
+   },
+   {
+    "text": "Heat risk is individual.",
+    "start": 39.660000000000004,
+    "end": 41.345333333333336
+   }
+  ]
+ },
+ {
+  "scene": "how",
+  "start": 42.525333333333336,
+  "end": 69.46000000000002,
+  "sents": [
+   {
+    "text": "HeatGuard combines four inputs: the worker's own heart rate from any low-cost wristband, site weather, the task being done, and days on the job.",
+    "start": 42.525333333333336,
+    "end": 51.400000000000006
+   },
+   {
+    "text": "A Kalman filter fuses a heat-balance model with the heart rate to estimate core temperature every minute, and forecasts thirty minutes ahead.",
+    "start": 51.68000000000001,
+    "end": 59.594666666666676
+   },
+   {
+    "text": "The output is a simple traffic light. Amber means a short shade break. Red means rest for fifteen minutes, and a human first-aider is told.",
+    "start": 59.87466666666668,
+    "end": 68.28000000000002
+   }
+  ]
+ },
+ {
+  "scene": "demo",
+  "start": 69.46000000000002,
+  "end": 121.8986666666667,
+  "sents": [
+   {
+    "text": "Here is a simulated hot August shift at an Abu Dhabi site. Eight workers, six a.m. to six p.m. The grey band is the statutory midday break.",
+    "start": 69.46000000000002,
+    "end": 79.7426666666667
+   },
+   {
+    "text": "Watch worker two, a rebar fixer on day four. Early on, HeatGuard sees a high-strain pattern and prompts shade and water.",
+    "start": 80.0226666666667,
+    "end": 87.27600000000002
+   },
+   {
+    "text": "At eight twenty-three it turns red, and her phone gets the alert in Hindi.",
+    "start": 87.55600000000003,
+    "end": 91.52400000000003
+   },
+   {
+    "text": "The red line shows what happens with no HeatGuard: she crosses thirty-eight point five at eight thirty and climbs to thirty-nine point six.",
+    "start": 91.80400000000003,
+    "end": 99.71866666666669
+   },
+   {
+    "text": "The green line is the same worker with HeatGuard. Short rests keep her below thirty-eight point four, all day.",
+    "start": 99.9986666666667,
+    "end": 106.18533333333336
+   },
+   {
+    "text": "Switch to the supervisor view. The site manager sees only a tier and an action. No temperature, no heart rate. The worker owns the data.",
+    "start": 106.46533333333336,
+    "end": 114.76400000000002
+   },
+   {
+    "text": "By the end of the shift, five of eight workers would have reached the limit without HeatGuard. With it, none did.",
+    "start": 115.04400000000003,
+    "end": 120.71866666666669
+   }
+  ]
+ },
+ {
+  "scene": "results",
+  "start": 121.8986666666667,
+  "end": 151.20400000000004,
+  "sents": [
+   {
+    "text": "Across three thousand held-out simulated worker-shifts, thirty-eight percent of workers reach thirty-eight point five degrees under today's practice, and twenty-two percent under a site-wide W-B-G-T cut-off.",
+    "start": 121.8986666666667,
+    "end": 134.3786666666667
+   },
+   {
+    "text": "With HeatGuard it is four point three percent, while keeping seven productive hours per shift instead of six.",
+    "start": 134.6586666666667,
+    "end": 140.8026666666667
+   },
+   {
+    "text": "Eighty-two percent of limit crossings were warned ten or more minutes ahead.",
+    "start": 141.0826666666667,
+    "end": 145.07200000000003
+   },
+   {
+    "text": "These are simulated results. The next step is calibration against human data.",
+    "start": 145.35200000000003,
+    "end": 150.02400000000003
+   }
+  ]
+ },
+ {
+  "scene": "close",
+  "start": 151.20400000000004,
+  "end": 170.05333333333337,
+  "sents": [
+   {
+    "text": "HeatGuard is decision support, not diagnosis. Data is consented and worker-owned, aggregates need five workers, and every red alert reaches a human.",
+    "start": 151.20400000000004,
+    "end": 160.99600000000004
+   },
+   {
+    "text": "Next: a calibration study, then a pilot at an Abu Dhabi site before next summer.",
+    "start": 161.27600000000004,
+    "end": 166.28933333333336
+   },
+   {
+    "text": "HeatGuard. From signals to solutions.",
+    "start": 166.56933333333336,
+    "end": 168.87333333333336
+   }
+  ]
+ }
+]
